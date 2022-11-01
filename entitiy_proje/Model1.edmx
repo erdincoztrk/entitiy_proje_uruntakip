@@ -1,0 +1,279 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EntityUrunModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="kategori_tablo">
+          <Key>
+            <PropertyRef Name="kategori_ID" />
+          </Key>
+          <Property Name="kategori_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kategori_AD" Type="varchar" MaxLength="70" />
+        </EntityType>
+        <EntityType Name="musteri_tablo">
+          <Key>
+            <PropertyRef Name="müsteri_ID" />
+          </Key>
+          <Property Name="müsteri_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="musteri_AD" Type="varchar" MaxLength="70" />
+          <Property Name="musteri_SOYAD" Type="varchar" MaxLength="70" />
+          <Property Name="musteri_sehir" Type="varchar" MaxLength="70" />
+          <Property Name="musteri_durum" Type="bit" />
+        </EntityType>
+        <EntityType Name="satis_tablo">
+          <Key>
+            <PropertyRef Name="satis_ID" />
+          </Key>
+          <Property Name="satis_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="satis_urun" Type="int" />
+          <Property Name="satis_musteri" Type="int" />
+          <Property Name="satis_fiyat" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="satis_tarih" Type="smalldatetime" />
+        </EntityType>
+        <EntityType Name="urun_tablo">
+          <Key>
+            <PropertyRef Name="urun_ID" />
+          </Key>
+          <Property Name="urun_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="urun_AD" Type="varchar" MaxLength="70" />
+          <Property Name="urun_marka" Type="varchar" MaxLength="70" />
+          <Property Name="urun_stok" Type="int" />
+          <Property Name="urun_fiyat" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="urun_durum" Type="bit" />
+          <Property Name="urun_kategori" Type="int" />
+        </EntityType>
+        <Association Name="FK_satis_tablo_musteri_tablo">
+          <End Role="musteri_tablo" Type="Self.musteri_tablo" Multiplicity="0..1" />
+          <End Role="satis_tablo" Type="Self.satis_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="musteri_tablo">
+              <PropertyRef Name="müsteri_ID" />
+            </Principal>
+            <Dependent Role="satis_tablo">
+              <PropertyRef Name="satis_musteri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_satis_tablo_urun_tablo">
+          <End Role="urun_tablo" Type="Self.urun_tablo" Multiplicity="0..1" />
+          <End Role="satis_tablo" Type="Self.satis_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="urun_tablo">
+              <PropertyRef Name="urun_ID" />
+            </Principal>
+            <Dependent Role="satis_tablo">
+              <PropertyRef Name="satis_urun" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_urun_tablo_kategori_tablo">
+          <End Role="kategori_tablo" Type="Self.kategori_tablo" Multiplicity="0..1" />
+          <End Role="urun_tablo" Type="Self.urun_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kategori_tablo">
+              <PropertyRef Name="kategori_ID" />
+            </Principal>
+            <Dependent Role="urun_tablo">
+              <PropertyRef Name="urun_kategori" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="markagetir" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="EntityUrunModelStoreContainer">
+          <EntitySet Name="kategori_tablo" EntityType="Self.kategori_tablo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="musteri_tablo" EntityType="Self.musteri_tablo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="satis_tablo" EntityType="Self.satis_tablo" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="urun_tablo" EntityType="Self.urun_tablo" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_satis_tablo_musteri_tablo" Association="Self.FK_satis_tablo_musteri_tablo">
+            <End Role="musteri_tablo" EntitySet="musteri_tablo" />
+            <End Role="satis_tablo" EntitySet="satis_tablo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_satis_tablo_urun_tablo" Association="Self.FK_satis_tablo_urun_tablo">
+            <End Role="urun_tablo" EntitySet="urun_tablo" />
+            <End Role="satis_tablo" EntitySet="satis_tablo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_urun_tablo_kategori_tablo" Association="Self.FK_urun_tablo_kategori_tablo">
+            <End Role="kategori_tablo" EntitySet="kategori_tablo" />
+            <End Role="urun_tablo" EntitySet="urun_tablo" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EntityUrunModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="kategori_tablo">
+          <Key>
+            <PropertyRef Name="kategori_ID" />
+          </Key>
+          <Property Name="kategori_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kategori_AD" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="urun_tablo" Relationship="Self.FK_urun_tablo_kategori_tablo" FromRole="kategori_tablo" ToRole="urun_tablo" />
+        </EntityType>
+        <EntityType Name="musteri_tablo">
+          <Key>
+            <PropertyRef Name="müsteri_ID" />
+          </Key>
+          <Property Name="müsteri_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="musteri_AD" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="musteri_SOYAD" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="musteri_sehir" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="satis_tablo" Relationship="Self.FK_satis_tablo_musteri_tablo" FromRole="musteri_tablo" ToRole="satis_tablo" />
+          <Property Name="musteri_durum" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="satis_tablo">
+          <Key>
+            <PropertyRef Name="satis_ID" />
+          </Key>
+          <Property Name="satis_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="satis_urun" Type="Int32" />
+          <Property Name="satis_musteri" Type="Int32" />
+          <Property Name="satis_fiyat" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="satis_tarih" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="musteri_tablo" Relationship="Self.FK_satis_tablo_musteri_tablo" FromRole="satis_tablo" ToRole="musteri_tablo" />
+          <NavigationProperty Name="urun_tablo" Relationship="Self.FK_satis_tablo_urun_tablo" FromRole="satis_tablo" ToRole="urun_tablo" />
+        </EntityType>
+        <EntityType Name="urun_tablo">
+          <Key>
+            <PropertyRef Name="urun_ID" />
+          </Key>
+          <Property Name="urun_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="urun_AD" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="urun_marka" Type="String" MaxLength="70" FixedLength="false" Unicode="false" />
+          <Property Name="urun_stok" Type="Int32" />
+          <Property Name="urun_fiyat" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="urun_durum" Type="Boolean" />
+          <Property Name="urun_kategori" Type="Int32" />
+          <NavigationProperty Name="kategori_tablo" Relationship="Self.FK_urun_tablo_kategori_tablo" FromRole="urun_tablo" ToRole="kategori_tablo" />
+          <NavigationProperty Name="satis_tablo" Relationship="Self.FK_satis_tablo_urun_tablo" FromRole="urun_tablo" ToRole="satis_tablo" />
+        </EntityType>
+        <Association Name="FK_urun_tablo_kategori_tablo">
+          <End Role="kategori_tablo" Type="Self.kategori_tablo" Multiplicity="0..1" />
+          <End Role="urun_tablo" Type="Self.urun_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="kategori_tablo">
+              <PropertyRef Name="kategori_ID" />
+            </Principal>
+            <Dependent Role="urun_tablo">
+              <PropertyRef Name="urun_kategori" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_satis_tablo_musteri_tablo">
+          <End Role="musteri_tablo" Type="Self.musteri_tablo" Multiplicity="0..1" />
+          <End Role="satis_tablo" Type="Self.satis_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="musteri_tablo">
+              <PropertyRef Name="müsteri_ID" />
+            </Principal>
+            <Dependent Role="satis_tablo">
+              <PropertyRef Name="satis_musteri" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_satis_tablo_urun_tablo">
+          <End Role="urun_tablo" Type="Self.urun_tablo" Multiplicity="0..1" />
+          <End Role="satis_tablo" Type="Self.satis_tablo" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="urun_tablo">
+              <PropertyRef Name="urun_ID" />
+            </Principal>
+            <Dependent Role="satis_tablo">
+              <PropertyRef Name="satis_urun" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EntityUrunEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="kategori_tablo" EntityType="Self.kategori_tablo" />
+          <EntitySet Name="musteri_tablo" EntityType="Self.musteri_tablo" />
+          <EntitySet Name="satis_tablo" EntityType="Self.satis_tablo" />
+          <EntitySet Name="urun_tablo" EntityType="Self.urun_tablo" />
+          <AssociationSet Name="FK_urun_tablo_kategori_tablo" Association="Self.FK_urun_tablo_kategori_tablo">
+            <End Role="kategori_tablo" EntitySet="kategori_tablo" />
+            <End Role="urun_tablo" EntitySet="urun_tablo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_satis_tablo_musteri_tablo" Association="Self.FK_satis_tablo_musteri_tablo">
+            <End Role="musteri_tablo" EntitySet="musteri_tablo" />
+            <End Role="satis_tablo" EntitySet="satis_tablo" />
+          </AssociationSet>
+          <AssociationSet Name="FK_satis_tablo_urun_tablo" Association="Self.FK_satis_tablo_urun_tablo">
+            <End Role="urun_tablo" EntitySet="urun_tablo" />
+            <End Role="satis_tablo" EntitySet="satis_tablo" />
+          </AssociationSet>
+          <FunctionImport Name="markagetir" ReturnType="Collection(String)" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EntityUrunModelStoreContainer" CdmEntityContainer="EntityUrunEntities">
+          <EntitySetMapping Name="kategori_tablo">
+            <EntityTypeMapping TypeName="EntityUrunModel.kategori_tablo">
+              <MappingFragment StoreEntitySet="kategori_tablo">
+                <ScalarProperty Name="kategori_ID" ColumnName="kategori_ID" />
+                <ScalarProperty Name="kategori_AD" ColumnName="kategori_AD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="musteri_tablo">
+            <EntityTypeMapping TypeName="EntityUrunModel.musteri_tablo">
+              <MappingFragment StoreEntitySet="musteri_tablo">
+                <ScalarProperty Name="musteri_durum" ColumnName="musteri_durum" />
+                <ScalarProperty Name="müsteri_ID" ColumnName="müsteri_ID" />
+                <ScalarProperty Name="musteri_AD" ColumnName="musteri_AD" />
+                <ScalarProperty Name="musteri_SOYAD" ColumnName="musteri_SOYAD" />
+                <ScalarProperty Name="musteri_sehir" ColumnName="musteri_sehir" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="satis_tablo">
+            <EntityTypeMapping TypeName="EntityUrunModel.satis_tablo">
+              <MappingFragment StoreEntitySet="satis_tablo">
+                <ScalarProperty Name="satis_ID" ColumnName="satis_ID" />
+                <ScalarProperty Name="satis_urun" ColumnName="satis_urun" />
+                <ScalarProperty Name="satis_musteri" ColumnName="satis_musteri" />
+                <ScalarProperty Name="satis_fiyat" ColumnName="satis_fiyat" />
+                <ScalarProperty Name="satis_tarih" ColumnName="satis_tarih" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="urun_tablo">
+            <EntityTypeMapping TypeName="EntityUrunModel.urun_tablo">
+              <MappingFragment StoreEntitySet="urun_tablo">
+                <ScalarProperty Name="urun_ID" ColumnName="urun_ID" />
+                <ScalarProperty Name="urun_AD" ColumnName="urun_AD" />
+                <ScalarProperty Name="urun_marka" ColumnName="urun_marka" />
+                <ScalarProperty Name="urun_stok" ColumnName="urun_stok" />
+                <ScalarProperty Name="urun_fiyat" ColumnName="urun_fiyat" />
+                <ScalarProperty Name="urun_durum" ColumnName="urun_durum" />
+                <ScalarProperty Name="urun_kategori" ColumnName="urun_kategori" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="markagetir" FunctionName="EntityUrunModel.Store.markagetir" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
